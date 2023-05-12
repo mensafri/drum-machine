@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    document.addEventListener('keydown', (event) => {
+      play(event.key.toUpperCase())
+    })
+  })
+
   const drumPads = [
     {
       keyId: 81,
@@ -50,23 +56,23 @@ function App() {
     },
   ];
 
-  const play = (val) => {
-    new Audio(val.src).play()
-  }
-
   const [text, setText] = useState('')
 
-  
+  function play(val){
+    document.getElementById(val).play()
+    // new Audio(val.src).play()
+    setText(val)
+  }
 
   return (
     <div id="drum-machine">
       <div id="display">{text}</div>
       <div className="drum-pads">
         {drumPads.map((pad) => (
-          <button key={pad.keyId} className="drum-pad" onClick={() => {play(pad)}} id={pad.text} value='PLAY'>
+          <div key={pad.keyId} className="drum-pad" onClick={() => {play(pad.text)}} id={pad.src} value='PLAY'>
             {pad.text}
             <audio src={pad.src} className="clip" id={pad.text}></audio>
-          </button>
+          </div>
         ))}
       </div>
     </div>
